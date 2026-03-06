@@ -1,0 +1,134 @@
+p2p-betting-platform/
+├── README.md
+├── SETUP_GUIDE.md
+├── .env.example
+├── .gitignore
+├── .cursorrules
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+├── quick-start.sh
+├── backend/
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── .env.example
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   ├── migrations/
+│   │   └── seed.ts
+│   ├── src/
+│   │   ├── app.ts
+│   │   ├── server.ts
+│   │   ├── config/
+│   │   │   ├── database.ts
+│   │   │   ├── jwt.ts
+│   │   │   └── socket.ts
+│   │   ├── controllers/
+│   │   │   ├── authController.ts
+│   │   │   ├── betController.ts
+│   │   │   ├── walletController.ts
+│   │   │   └── adminController.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.ts
+│   │   │   ├── validation.ts
+│   │   │   ├── rateLimit.ts
+│   │   │   └── errorHandler.ts
+│   │   ├── routes/
+│   │   │   ├── auth.ts
+│   │   │   ├── bets.ts
+│   │   │   ├── wallet.ts
+│   │   │   └── admin.ts
+│   │   ├── services/
+│   │   │   ├── authService.ts
+│   │   │   ├── betService.ts
+│   │   │   ├── walletService.ts
+│   │   │   ├── socketService.ts
+│   │   │   └── paymentService.ts
+│   │   ├── types/
+│   │   │   ├── auth.ts
+│   │   │   ├── bet.ts
+│   │   │   └── wallet.ts
+│   │   └── utils/
+│   │       ├── logger.ts
+│   │       ├── validation.ts
+│   │       └── helpers.ts
+│   └── dist/
+├── frontend/
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── index.html
+│   ├── public/
+│   │   └── favicon.ico
+│   └── src/
+│       ├── main.tsx
+│       ├── App.tsx
+│       ├── components/
+│       │   ├── ui/
+│       │   │   ├── Button.tsx
+│       │   │   ├── Input.tsx
+│       │   │   ├── Modal.tsx
+│       │   │   ├── Card.tsx
+│       │   │   └── Badge.tsx
+│       │   ├── layout/
+│       │   │   ├── Navbar.tsx
+│       │   │   ├── Sidebar.tsx
+│       │   │   └── Footer.tsx
+│       │   ├── auth/
+│       │   │   ├── LoginForm.tsx
+│       │   │   ├── RegisterForm.tsx
+│       │   │   └── GoogleAuthButton.tsx
+│       │   ├── bets/
+│       │   │   ├── CreateBetForm.tsx
+│       │   │   ├── BetCard.tsx
+│       │   │   ├── BetList.tsx
+│       │   │   ├── BetDetails.tsx
+│       │   │   └── CounterOfferForm.tsx
+│       │   ├── wallet/
+│       │   │   ├── WalletBalance.tsx
+│       │   │   ├── DepositForm.tsx
+│       │   │   ├── WithdrawForm.tsx
+│       │   │   └── TransactionHistory.tsx
+│       │   └── admin/
+│       │       ├── AdminDashboard.tsx
+│       │       ├── UserManagement.tsx
+│       │       ├── BetSettlement.tsx
+│       │       └── RequestManagement.tsx
+│       ├── pages/
+│       │   ├── Login.tsx
+│       │   ├── Register.tsx
+│       │   ├── Dashboard.tsx
+│       │   ├── CreateBet.tsx
+│       │   ├── BrowseBets.tsx
+│       │   ├── MyBets.tsx
+│       │   ├── Wallet.tsx
+│       │   └── AdminDashboard.tsx
+│       ├── hooks/
+│       │   ├── useAuth.ts
+│       │   ├── useSocket.ts
+│       │   ├── useWallet.ts
+│       │   └── useBets.ts
+│       ├── store/
+│       │   ├── authStore.ts
+│       │   ├── betStore.ts
+│       │   └── walletStore.ts
+│       ├── services/
+│       │   ├── api.ts
+│       │   ├── socket.ts
+│       │   └── auth.ts
+│       ├── types/
+│       │   ├── auth.ts
+│       │   ├── bet.ts
+│       │   └── wallet.ts
+│       └── utils/
+│           ├── constants.ts
+│           ├── helpers.ts
+│           └── validation.ts
+└── docs/
+    ├── API.md
+    ├── DEPLOYMENT.md
+    └── LEGAL.md

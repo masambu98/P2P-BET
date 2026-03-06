@@ -1,0 +1,19 @@
+{
+  "name": "p2p-betting",
+  "version": "1.0.0",
+  "description": "**THIS IS A PRIVATE PILOT-ONLY P2P SPORTS BETTING PLATFORM**\r - **NO REAL MONEY INVOLVED** - Virtual KES balances only\r - **INVITE-ONLY** - Friends and family testing phase\r - **KENYAN GAMBLING CONTROL ACT 2025 COMPLIANCE REQUIRED**\r - **UNLICENSED REAL-MONEY OPERATION IS ILLEGAL**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

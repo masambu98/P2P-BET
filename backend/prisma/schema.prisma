@@ -1,0 +1,371 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider    = "prisma-client-js"
+  engineType  = "binary"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  username          String   @unique
+  passwordHash      String?
+  googleId          String?  @unique
+  avatar            String?
+  kycStatus         String   @default("pending") 
+  kycDocuments      String?  
+  lastLoginAt       DateTime?
+  isActive          Boolean  @default(true)
+  isVerified        Boolean  @default(false)
+  role              String   @default("USER") 
+  balance           Decimal  @default(0.00)
+  totalWagered      Decimal  @default(0.00)
+  totalWon          Decimal  @default(0.00)
+  referralCode      String?  @unique
+  referredBy        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  wallet            Wallet?
+  betProposals      BetProposal[]
+  acceptedBets      Bet[]       @relation("AcceptedBets")
+  createdBets       Bet[]       @relation("CreatedBets")
+  wonBets           Bet[]       @relation("Winner")
+  transactions      Transaction[]
+  notifications     Notification[]
+  settlementHistory Settlement[] @relation("SettlementHistory")
+  withdrawalRequests WithdrawalRequest[]
+  depositRequests   DepositRequest[]
+  platformFees      PlatformFees[]
+  createdRooms      Room[]      @relation("RoomCreator")
+  roomMemberships   RoomMember[]
+  sentMessages      RoomMessage[]
+  followers         Follow[]    @relation("Followers")
+  following         Follow[]    @relation("Following")
+  tipsterProfile    Tipster?
+  tipPurchases      TipPurchase[] @relation("TipPurchases")
+
+  @@map("users")
+}
+
+model Wallet {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  balance     Decimal  @default(0.00)
+  currency    String   @default("USD")
+  frozenFunds Decimal  @default(0.00)
+  btcAddress  String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@map("wallets")
+}
+
+model BetProposal {
+  id              String   @id @default(cuid())
+  proposerId      String
+  title           String
+  description     String
+  category        String   @default("sports")
+  eventType       String   @default("match")
+  eventName       String
+  eventDate       DateTime
+  odds            Decimal
+  stakeAmount     Decimal
+  totalStake      Decimal  @default(0.00)
+  maxParticipants Int      @default(2)
+  currentParticipants Int  @default(1)
+  status          String   @default("PENDING") 
+  expiresAt       DateTime?
+  venue           String?  
+  additionalInfo  String?  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  proposer        User     @relation(fields: [proposerId], references: [id])
+  bets            Bet[]
+
+  @@map("bet_proposals")
+}
+
+model Bet {
+  id            String   @id @default(cuid())
+  proposalId    String
+  bettorId      String
+  creatorId     String
+  stakeAmount   Decimal
+  odds          Decimal
+  potentialWin  Decimal
+  status        String   @default("PENDING") 
+  houseFee      Decimal  @default(0.00)
+  eventResult   String?  
+  winnerId      String?
+  settledAt     DateTime?
+  roomId        String?   // Optional room association
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  proposal      BetProposal @relation(fields: [proposalId], references: [id])
+  bettor        User        @relation("AcceptedBets", fields: [bettorId], references: [id])
+  creator       User        @relation("CreatedBets", fields: [creatorId], references: [id])
+  winner        User?       @relation("Winner", fields: [winnerId], references: [id])
+  transactions  Transaction[]
+  settlement    Settlement?
+  room          Room?       @relation("RoomCurrentBet")
+
+  @@map("bets")
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  userId          String
+  walletId        String
+  betId           String?
+  type            String   
+  amount          Decimal
+  balanceBefore   Decimal
+  balanceAfter    Decimal
+  reference       String?
+  description     String
+  status          String   @default("PENDING") 
+  metadata        String?  
+  createdAt       DateTime @default(now())
+
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+  wallet          Wallet   @relation(fields: [walletId], references: [id])
+  bet             Bet?     @relation(fields: [betId], references: [id])
+
+  @@map("transactions")
+}
+
+model Settlement {
+  id            String   @id @default(cuid())
+  betId         String   @unique
+  settledBy     String
+  result        String
+  notes         String?
+  eventResult   String?  
+  settledAt     DateTime @default(now())
+
+  // Relations
+  bet           Bet      @relation(fields: [betId], references: [id])
+  settler       User?    @relation("SettlementHistory", fields: [settledBy], references: [id])
+
+  @@map("settlements")
+}
+
+model WithdrawalRequest {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Decimal
+  method        String
+  address       String?
+  status        String   @default("PENDING") 
+  processedBy   String?
+  notes         String?
+  metadata      String?  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("withdrawal_requests")
+}
+
+model DepositRequest {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Decimal
+  method        String
+  transactionId String?
+  status        String   @default("PENDING") 
+  processedBy   String?
+  notes         String?
+  metadata      String?  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("deposit_requests")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  data      String?  
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model SystemSettings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+  
+  @@map("system_settings")
+}
+
+model PlatformFees {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // DEPOSIT, WITHDRAWAL, BET
+  amount    Decimal  @default(0.00)
+  btcTxId   String?  @unique
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("platform_fees")
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  description String?
+  creatorId   String
+  maxMembers  Int      @default(10)
+  isActive    Boolean  @default(true)
+  currentBetId String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  creator     User       @relation("RoomCreator", fields: [creatorId], references: [id])
+  members     RoomMember[]
+  messages    RoomMessage[]
+  currentBet  Bet?       @relation("RoomCurrentBet", fields: [currentBetId], references: [id])
+
+  @@map("rooms")
+}
+
+model RoomMember {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  joinedAt  DateTime @default(now())
+
+  // Relations
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@map("room_members")
+}
+
+model RoomMessage {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("room_messages")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  follower    User     @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+model Tipster {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  bio         String?
+  pricePerPick Decimal  @default(100.00) // Price per paid pick
+  totalPicks  Int      @default(0)
+  winningPicks Int     @default(0)
+  totalRevenue Decimal  @default(0.00)
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tips        Tip[]
+
+  @@map("tipsters")
+}
+
+model Tip {
+  id          String   @id @default(cuid())
+  tipsterId   String
+  title       String
+  description String
+  sport       String
+  category    String
+  prediction  String
+  odds        Decimal
+  stakeAmount Decimal  @default(100.00)
+  price       Decimal
+  status      String   @default("ACTIVE") // ACTIVE, SETTLED_WON, SETTLED_LOST, EXPIRED
+  result      String?  // WON, LOST, PUSH
+  analysis    String?  // Detailed analysis
+  expiresAt   DateTime
+  settledAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tipster     Tipster  @relation(fields: [tipsterId], references: [id], onDelete: Cascade)
+  purchases   TipPurchase[]
+
+  @@map("tips")
+}
+
+model TipPurchase {
+  id        String   @id @default(cuid())
+  tipId     String
+  userId    String
+  price     Decimal
+  purchasedAt DateTime @default(now())
+
+  // Relations
+  tip       Tip      @relation(fields: [tipId], references: [id], onDelete: Cascade)
+  user      User     @relation("TipPurchases", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tipId, userId])
+  @@map("tip_purchases")
+}

@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-dark-bg text-gray-100;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(153, 69, 255, 0.1) 0%, transparent 50%);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg transform hover:scale-105 active:scale-95;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-neon-green to-emerald-600 text-dark-bg hover:from-neon-green hover:to-emerald-500 focus:ring-neon-green shadow-lg shadow-neon-green/25;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-card border border-dark-border text-gray-300 hover:bg-dark-border hover:text-white focus:ring-dark-border;
+  }
+  
+  .btn-success {
+    @apply bg-gradient-to-r from-success to-emerald-600 text-dark-bg hover:from-success hover:to-emerald-500 focus:ring-success shadow-lg shadow-success/25;
+  }
+  
+  .btn-danger {
+    @apply bg-gradient-to-r from-danger to-pink-600 text-white hover:from-danger hover:to-pink-500 focus:ring-danger shadow-lg shadow-danger/25;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg focus:ring-neon-green;
+  }
+  
+  .input {
+    @apply w-full px-4 py-3 bg-dark-card border border-dark-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-green focus:border-transparent transition-all duration-300;
+  }
+  
+  .card {
+    @apply bg-dark-card/50 backdrop-blur-xl rounded-2xl border border-dark-border p-6 shadow-2xl hover:border-neon-green/50 transition-all duration-300;
+  }
+  
+  .glass-card {
+    @apply bg-dark-card/30 backdrop-blur-xl rounded-2xl border border-dark-border/50 shadow-2xl;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  
+  .badge-success {
+    @apply bg-success/20 text-success border border-success/30;
+  }
+  
+  .badge-danger {
+    @apply bg-danger/20 text-danger border border-danger/30;
+  }
+  
+  .badge-warning {
+    @apply bg-warning/20 text-warning border border-warning/30;
+  }
+  
+  .badge-info {
+    @apply bg-info/20 text-info border border-info/30;
+  }
+  
+  .badge-secondary {
+    @apply bg-gray-500/20 text-gray-400 border border-gray-500/30;
+  }
+  
+  .navbar {
+    @apply bg-dark-card/80 backdrop-blur-xl border-b border-dark-border sticky top-0 z-50 shadow-xl;
+  }
+  
+  .glow-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-blue;
+  }
+  
+  .glow-border {
+    @apply border border-neon-green/50 shadow-lg shadow-neon-green/25;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .glass-effect {
+    background: rgba(26, 26, 46, 0.3);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(42, 42, 62, 0.3);
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3), 0 0 30px rgba(0, 255, 136, 0.1);
+  }
+  
+  .neon-glow-blue {
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.5), 0 0 20px rgba(0, 102, 255, 0.3), 0 0 30px rgba(0, 102, 255, 0.1);
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 26, 46, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00ff88, #0066ff);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #00cc6a, #0052cc);
+}

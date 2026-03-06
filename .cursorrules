@@ -1,0 +1,102 @@
+# Elite Full-Stack Development Guidelines
+
+## Core Principles
+- Production-ready, zero-technical-debt code only
+- Clean, readable, self-documenting code with descriptive names
+- Follow SOLID/DRY/KISS principles religiously
+- No unnecessary abstractions, boilerplate, or speculation
+- Security-first approach in all implementations
+- Handle all edge cases and errors gracefully
+- Performance and scalability considerations in every decision
+
+## Code Quality Standards
+- TypeScript strict mode always enabled
+- No comments unless absolutely critical (code should be self-documenting)
+- Descriptive variable, function, and class names
+- Consistent error handling patterns
+- Input validation and sanitization everywhere
+- Audit trails for all critical operations
+- Rate limiting and security headers by default
+
+## Architecture Guidelines
+- Modular, maintainable structure
+- Clear separation of concerns
+- Dependency injection where appropriate
+- Service layer for business logic
+- Controller layer for HTTP handling
+- Middleware for cross-cutting concerns
+- Type safety throughout the stack
+
+## Security Requirements
+- JWT authentication with proper expiration
+- bcrypt for password hashing
+- Helmet, CORS, rate limiting enabled
+- SQL injection prevention (Prisma ORM)
+- XSS protection with input sanitization
+- CSRF protection for state-changing operations
+- Secure headers and cookie policies
+
+## Database & Data Handling
+- Prisma ORM with PostgreSQL
+- Proper indexing for performance
+- Transactional consistency for financial operations
+- Audit logging for all bets and transactions
+- Data validation at multiple layers
+- Backup and recovery considerations
+
+## API Design
+- RESTful principles with consistent patterns
+- Proper HTTP status codes
+- Standardized error response format
+- API versioning consideration
+- Comprehensive input validation with Zod
+- Rate limiting per endpoint/user
+
+## Frontend Standards
+- React 18 with TypeScript
+- Tailwind CSS for styling
+- Responsive, mobile-first design
+- Component-based architecture
+- State management with Zustand
+- Proper error boundaries and loading states
+- Accessibility considerations
+
+## Testing & Quality Assurance
+- Unit tests for business logic
+- Integration tests for API endpoints
+- E2E tests for critical user flows
+- Code coverage requirements
+- Linting and formatting enforcement
+- Security scanning in CI/CD
+
+## Performance Requirements
+- Optimized database queries
+- Efficient state management
+- Lazy loading where appropriate
+- Image and asset optimization
+- Caching strategies implemented
+- Monitoring and alerting setup
+
+## Compliance & Legal
+- Gambling Control Act 2025 compliance
+- Clear warnings about licensing requirements
+- Virtual currency only in pilot phase
+- KYC/AML considerations for future
+- Data privacy regulations adherence
+- Terms of service enforcement
+
+## Development Workflow
+- Feature branch development
+- Code review requirements
+- Automated testing in CI/CD
+- Staging environment validation
+- Production deployment protocols
+- Rollback strategies defined
+
+## Monitoring & Observability
+- Structured logging with Winston
+- Performance metrics collection
+- Error tracking and alerting
+- User behavior analytics
+- System health monitoring
+- Security event logging
